@@ -29,5 +29,5 @@ void	*ft_memmove(void *dest, const void *src, size_t len)
 		while (len--)
 			str1[len] = str2[len];
 	}
-	return (str1);
+	return (dest);
 }

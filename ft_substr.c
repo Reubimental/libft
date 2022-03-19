@@ -12,21 +12,68 @@
 
 #include "libft.h"
 
-char	*ft_substr(const char *source, int start, int finish)
+static char	*fail_start(void)
 {
-	int		i;
-	int		len;
 	char	*dest;
 
-	len = finish - start;
-	dest = malloc(sizeof(char *) * (len + 1));
-	i = start;
-	while (i < finish && (*(source + i) != 0))
+	dest = malloc(1);
+	if (!dest)
+		return (NULL);
+	dest[0] = '\0';
+	return (dest);
+}
+
+char	*ft_substr(const char *source, unsigned int start, size_t finish)
+{
+	size_t			i;
+	size_t			size;
+	char			*dest;
+	char			*src;
+
+	i = 0;
+	src = (char *)source;
+	if (!src)
+		return (NULL);
+	size = ft_strlen(src);
+	if (size < start)
+		return (fail_start());
+	dest = malloc(sizeof(char) * (finish + 1));
+	if (!dest)
+		return (NULL);
+	while (i < finish)
 	{
-		*dest = *(source + i);
-		dest++;
+		dest[i] = source[start + i];
 		i++;
 	}
-	*dest = 0;
-	return (dest - len);
+	dest[i] = '\0';
+	return (dest);
 }
+
+/*{
+	unsigned int		i;
+	unsigned int		len;
+	char				*dest;
+
+	i = 0;
+	if (!((char *)source))
+		return (NULL);
+	len = ft_strlen((char *)source);
+	if (len < start)
+	{
+		dest = malloc(sizeof(char));
+		if (!dest)
+			return (NULL);
+		dest[0] = 0;
+		return (dest);
+	}
+	dest = malloc(sizeof(char) * (finish + 1));
+	if (!dest)
+		return (NULL);
+	while (i < len)
+	{
+		dest[i] = source[start + i];
+		i++;
+	}
+	dest[i] = 0;
+	return (dest);
+}*/
