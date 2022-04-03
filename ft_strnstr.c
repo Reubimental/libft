@@ -15,8 +15,14 @@
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	needle_len;
+	size_t	haystack_len;
 
 	needle_len = ft_strlen(needle);
+	haystack_len = ft_strlen(haystack);
+	if (len < 0)
+	{
+		len = haystack_len + (haystack_len % len);
+	}
 	if (!needle_len)
 		return ((char *)haystack);
 	while (len >= needle_len)
@@ -24,14 +30,8 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 		len--;
 		if (!ft_memcmp(haystack, needle, needle_len))
 			return ((char *)haystack);
-		haystack++;
+		if (*haystack++ == '\0')
+			return (NULL);
 	}
 	return (NULL);
 }
-
-/*	If moulinette fails me, it ONLY KO'd on Test 7.
-*	The haystack is empty, the needle is "coucou", and the len is -1.
-*	It SHOULD be skipping over everything, since the needle and needle_len are not NULL
-*	And the While loop shouldn't even be initiated, since len is far smaller than needle_len
-*	So it should skip to the end and exit with NULL, which is the expected outcome, but it fails.
-*/

@@ -12,68 +12,28 @@
 
 #include "libft.h"
 
-static char	*fail_start(void)
-{
-	char	*dest;
-
-	dest = malloc(1);
-	if (!dest)
-		return (NULL);
-	dest[0] = '\0';
-	return (dest);
-}
-
-char	*ft_substr(const char *source, unsigned int start, size_t finish)
+char	*ft_substr(const char *source, unsigned int start, size_t output_length)
 {
 	size_t			i;
-	size_t			size;
-	char			*dest;
-	char			*src;
+	size_t			source_length;
+	char			*output_string;
 
+	source_length = ft_strlen(source);
 	i = 0;
-	src = (char *)source;
-	if (!src)
+	if (!source)
 		return (NULL);
-	size = ft_strlen(src);
-	if (size < start)
-		return (fail_start());
-	dest = malloc(sizeof(char) * (finish + 1));
-	if (!dest)
+	if (start >= source_length)
+		start = source_length;
+	if ((source_length - start) < output_length)
+		output_length = source_length - start;
+	output_string = (char *)malloc(sizeof(char) * (output_length + 1));
+	if (!output_string)
 		return (NULL);
-	while (i < finish)
+	while (i + start < source_length && i < output_length)
 	{
-		dest[i] = source[start + i];
+		output_string[i] = source[i + start];
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	output_string[i] = '\0';
+	return (output_string);
 }
-
-/*{
-	unsigned int		i;
-	unsigned int		len;
-	char				*dest;
-
-	i = 0;
-	if (!((char *)source))
-		return (NULL);
-	len = ft_strlen((char *)source);
-	if (len < start)
-	{
-		dest = malloc(sizeof(char));
-		if (!dest)
-			return (NULL);
-		dest[0] = 0;
-		return (dest);
-	}
-	dest = malloc(sizeof(char) * (finish + 1));
-	if (!dest)
-		return (NULL);
-	while (i < len)
-	{
-		dest[i] = source[start + i];
-		i++;
-	}
-	dest[i] = 0;
-	return (dest);
-}*/

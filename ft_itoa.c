@@ -12,48 +12,53 @@
 
 #include "libft.h"
 
-static int	num_length(int n)
+static size_t	num_length(int n)
 {
-	int	length;
+	size_t	length;
 
-	length = 0;
+	if (!n)
+		return (1);
 	if (n < 0)
+		n *= -1;
+	length = 0;
+	while (n)
 	{
-		n = n * -1;
-		length++;
-	}
-	while (n > 0)
-	{
-		n = n / 10;
+		n /= 10;
 		length++;
 	}
 	return (length);
 }
 
+static char	*putnumber(char *dest, int n, int len)
+{
+	unsigned int	number;
+
+	number = n;
+	if (n < 0)
+		number = -n;
+	while (len--)
+	{
+		dest[len] = (number % 10) + '0';
+		if (number > 9)
+			number /= 10;
+	}
+	if (n < 0)
+		dest[0] = '-';
+	return (dest);
+}
+
 char	*ft_itoa(int n)
 {
 	char	*str;
-	long	number;
-	int		index;
+	size_t	len;
 
-	number = n;
-	index = num_length(number);
-	str = malloc(sizeof(char) * (index + 1));
+	len = num_length(n);
+	if (n < 0)
+		len++;
+	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	str[index--] = 0;
-	if (number == 0)
-		str[0] = '0';
-	while (number < 0)
-	{
-		str[0] = '-';
-		number = number * -1;
-	}
-	while (number > 0)
-	{
-		str[index] = '0' + (number % 10);
-		n = n / 10;
-		index--;
-	}
+	putnumber(str, n, len);
+	str[len] = '\0';
 	return (str);
 }
