@@ -12,21 +12,31 @@ SRC		:=	\
 	ft_putendl_fd.c	ft_calloc.c		ft_strdup.c		ft_memmove.c	ft_strlen.c		\
 	ft_islower.c	ft_strtrim.c
 
+BONUS	:= \
+	ft_lstadd_back.c	ft_lstadd_front.c	ft_lstclear.c	ft_lstdelone.c	ft_lstiter.c	\
+	ft_lstlast.c		ft_lstmap.c			ft_lstnew.c		ft_lstsize.c
+
+BONUS_OBS	:= $(patsubst %.c, %.o, $(BONUS))
+
 OBS		:= $(patsubst %.c, %.o, $(SRC))
 
 all: $(NAME)
 $(NAME): $(OBS)
 	ar -rcs $(NAME) $(OBS)
 
+bonus:	$(OBS) $(BONUS_OBS)
+	ar -rcs $(NAME) $(OBS) $(BONUS_OBS)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBS)
+	$(RM) $(BONUS_OBS)
 
 fclean: clean
 	$(RM) $(NAME)
 
-re: fclean all
+re:	fclean all
 
 .PHONY: all clean fclean re
